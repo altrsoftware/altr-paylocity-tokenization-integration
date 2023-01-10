@@ -1,0 +1,7 @@
+.dockerignore
+.git
+Dockerfile
+.github
+imgs
+test
+node_modules
