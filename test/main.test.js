@@ -1,6 +1,6 @@
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
-const main = require('../utils/index');
+const main = require('../utils/main');
 
 let mock;
 
@@ -132,9 +132,9 @@ describe("TESTING main(config)", () => {
                 "clientSecret": "fakeClientSecret"
             }
             mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
-            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, { "fakeKey": "fakeValueToTokenize" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
             response = await main(config);
-            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "fakeKey": "tokenization failed" }));
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "tokenization failed" }]));
         });
     });
     
@@ -171,8 +171,8 @@ describe("TESTING main(config)", () => {
         });
     });
 
-    describe('When Tokenization succeeds and S3 Export fails', () => {
-        it('should tranform untokenized value to "tokenization failed"', async () => {
+    describe('When main(config) succeeds', () => {
+        it('should return properly tokeized values', async () => {
             config = {
                 "Function": "getEmployeeIds",
                 "Parameters": {
@@ -193,11 +193,11 @@ describe("TESTING main(config)", () => {
                 "s3Key": "fakeS3Key",
             }
             mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
-            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, { "fakeKey": "fakeValueToTokenize" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
             mock.onPost('https://vault.live.altr.com/api/v1/batch').reply((config) => [200, { "data": { [Object.keys(JSON.parse(config.data))]: "token_fakeToken" } }]);
             mock.onPost('fakeS3Endpoint').reply(200, "s3 export success");
             response = await main(config);
-            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "fakeKey": "token_fakeToken" }));
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "token_fakeToken" }]));
         });
     });
 
