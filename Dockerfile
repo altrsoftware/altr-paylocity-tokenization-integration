@@ -14,4 +14,4 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
-CMD ["tini", "node", "index.js"]
+CMD ["tini", "node", "server.js"]
