@@ -17,6 +17,7 @@ A configuration object must be sent to the Express server in the body of an HTTP
 
 - **Function** - the value should contain the name of the request to execute
 - **Parameters** - an object containing the parameter names and values for the executed request
+ - Note: for functions which require Parameter "employee", using "all" in place of an Employee ID will query all employees at once.
 - **Tokenize** - an array containing the names of the fields to be tokenized
 - **Export** - "true" to export to S3
 
