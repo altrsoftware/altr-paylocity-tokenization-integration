@@ -1,6 +1,6 @@
 const s3Export = require('./s3Export');
 const tokenize = require('./tokenize');
-const getFunction = require('./functions');
+const getFunction = require('./functions').getFunction;
 const sendGetRequest = require('./sendGetRequest');
 
 /**
@@ -20,7 +20,7 @@ const main = async (config) => {
 
     let res = (await sendGetRequest(auth, _function)).data;
     
-    const data = {};
+    const data = Array.isArray(res) ? [] : {};
     for(let item in res) {
         for(let tokenizeIndex in config.Tokenize) {
             const toTokenize = config.Tokenize[tokenizeIndex];
