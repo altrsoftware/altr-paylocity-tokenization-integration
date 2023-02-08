@@ -4,6 +4,12 @@ const main = require('./main');
 const tokenize = require('./tokenize');
 const s3Export = require('./s3Export');
 
+/**
+ * Recursively aggregates paths to each occurrence in object o of key s
+ * @param {Object} o An object containing Paylocity data
+ * @param {Array} s An array containing the fields to tokenize
+ * @returns {Array} An array of paths to each occurence of key s in object o
+ */
 function findKeyPath(o, s) {
 
     let result = [];
@@ -24,6 +30,12 @@ function findKeyPath(o, s) {
 
 }
 
+/**
+ * Uses function findKeyPath to aggregate values to tokenize and send, in bulk, to ALTR's tokenization API
+ * @param {Object} data An object containing all Paylocity data
+ * @param {Array} tokenizeKeys An array containing the fields to tokenize
+ * @returns {Object} The original object, data, with the properly tokenized values inserted
+ */
 async function toTokens(data, tokenizeKeys) {
 
     if(typeof data !== "object") throw "Data must be type Object";
@@ -112,10 +124,7 @@ const mainAllEmployees = async (config) => {
 
     const data = {};
 
-    // let employeeInit = config?.Parameters?.pageSize ?? 0 * config?.Parameters?.pageNum ?? 0;
-
     for(let employeeIndex in employees) {
-        if(employeeIndex > 10) break;
         console.log(employeeIndex);
         config.Parameters.employee = employees[employeeIndex].employeeId;
         config.Tokenize = [];
