@@ -38,9 +38,6 @@ function findKeyPath(o, s) {
  */
 async function toTokens(data, tokenizeKeys) {
 
-    if(typeof data !== "object") throw "Data must be type Object";
-    if(!Array.isArray(tokenizeKeys)) throw "Keys to tokenize must be type Array";
-
     const pathArray = findKeyPath(data, tokenizeKeys);
     let flatObj = {};
     
@@ -131,7 +128,7 @@ const mainAllEmployees = async (config) => {
         data[employees[employeeIndex].employeeId] = await main(config);
     }
 
-    const obj = tmpTokenize.length !== 0 ? await toTokens(data, tmpTokenize, tokenize) : data;
+    const obj = Array.isArray(tmpTokenize) && tmpTokenize.length !== 0 ? await toTokens(data, tmpTokenize, tokenize) : data;
 
     if(tmpExport === "true") {
         try {
