@@ -115,6 +115,29 @@ describe("TESTING main(config)", () => {
         });
     });
 
+    describe('When fetching Paylocity data succeeds but Tokenize field is not an array', () => {
+        it('should tranform untokenized value to "tokenization failed"', async () => {
+            config = {
+                "Function": "getEmployeeIds",
+                "Parameters": {
+                    "pageSize": "10",
+                    "pageNumber": "0"
+                },
+                "Tokenize": ["fakeKey"]
+            };
+            process.env = {
+                ...process.env,
+                "domain": "fakeDomain",
+                "clientId": "fakeClientId",
+                "clientSecret": "fakeClientSecret"
+            }
+            mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
+            response = await main(config);
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "tokenization failed" }]));
+        });
+    });
+
     describe('When fetching Paylocity data succeeds and tokenization fails', () => {
         it('should tranform untokenized value to "tokenization failed"', async () => {
             config = {
@@ -172,7 +195,7 @@ describe("TESTING main(config)", () => {
     });
 
     describe('When main(config) succeeds', () => {
-        it('should return properly tokeized values', async () => {
+        it('should return properly tokenized values', async () => {
             config = {
                 "Function": "getEmployeeIds",
                 "Parameters": {
@@ -193,11 +216,11 @@ describe("TESTING main(config)", () => {
                 "s3Key": "fakeS3Key",
             }
             mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
-            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }, { "fakeKey2": "fakeValueToNotTokenize" }]);
             mock.onPost('https://vault.live.altr.com/api/v1/batch').reply((config) => [200, { "data": { [Object.keys(JSON.parse(config.data))]: "token_fakeToken" } }]);
             mock.onPost('fakeS3Endpoint').reply(200, "s3 export success");
             response = await main(config);
-            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "token_fakeToken" }]));
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "token_fakeToken" }, { "fakeKey2": "fakeValueToNotTokenize" }]));
         });
     });
 
