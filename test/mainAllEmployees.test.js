@@ -186,7 +186,7 @@ describe('TESTING mainAllEmployees(config)', () => {
             expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "fakeEmployeeData" }] }));
         });
     });
-
+    
     describe('When mainAllEmployees(config) is able to fetch data, but tokenization fails', () => {
         it('the keys intended to be tokenized return values "tokenization failed"', async () => {
             config = {
@@ -280,5 +280,4 @@ describe('TESTING mainAllEmployees(config)', () => {
             expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "token_fakeToken" }] }));
         });
     });
-
 });

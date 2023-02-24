@@ -38,6 +38,12 @@ const main = async (config) => {
 
     if(config.Export === "true") {
         await s3Export({body: data, name: `${config.Function}-${new Date().toISOString()}.json`});
+        data.push(res[item]);
+    }
+
+    if(config.Export === "true") {
+        const exportSuccess = await s3Export({body: data, name: `${config.Function}-${new Date().toISOString()}.json`});
+        console.log(exportSuccess);
     }
 
     return data;

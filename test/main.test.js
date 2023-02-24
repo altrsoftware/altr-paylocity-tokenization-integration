@@ -114,7 +114,7 @@ describe("TESTING main(config)", () => {
             }
         });
     });
-
+    
     describe('When fetching Paylocity data succeeds but Tokenize field is not an array', () => {
         it('should tranform untokenized value to "tokenization failed"', async () => {
             config = {
@@ -137,7 +137,7 @@ describe("TESTING main(config)", () => {
             expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "tokenization failed" }]));
         });
     });
-
+    
     describe('When fetching Paylocity data succeeds and tokenization fails', () => {
         it('should tranform untokenized value to "tokenization failed"', async () => {
             config = {
@@ -221,6 +221,7 @@ describe("TESTING main(config)", () => {
             mock.onPost('fakeS3Endpoint').reply(200, "s3 export success");
             response = await main(config);
             expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([{ "fakeKey": "token_fakeToken" }, { "fakeKey2": "fakeValueToNotTokenize" }]));
+
         });
     });
 

@@ -122,7 +122,6 @@ const mainAllEmployees = async (config) => {
     const data = {};
 
     for(let employeeIndex in employees) {
-        console.log(employeeIndex);
         config.Parameters.employee = employees[employeeIndex].employeeId;
         config.Tokenize = [];
         data[employees[employeeIndex].employeeId] = await main(config);
