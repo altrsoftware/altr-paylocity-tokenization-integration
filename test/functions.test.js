@@ -1,4 +1,4 @@
-const getFunction = require("../utils/functions");
+const getFunction = require("../utils/functions").getFunction;
 
 let config;
 let functionCall;

@@ -3,17 +3,23 @@ const app = express();
 
 const main = require('./utils/main');
 const mainAllEmployees = require('./utils/mainAllEmployees');
+const functions = require('./utils/functions').FUNCTIONS;
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.text());
+app.use(express.json());
 
 const PORT = parseInt(process.env.PORT) || 3000;
 
-app.post('/*', async (req, res) => {
-    const body = JSON.parse(req.body);
-    const response = body?.Parameters?.employee?.toLowerCase() === 'all' ? 
-        await mainAllEmployees(body) : await main(body);
-    res.send(response);
+app.post('/*', async ({ body }, res) => {
+    try {
+        const hasEmployeeParam = functions?.[body?.Function].required.includes('employee');
+        const response = hasEmployeeParam && body?.Parameters?.employee?.toLowerCase() === 'all' ? 
+            await mainAllEmployees(body) : await main(body);
+        res.send(response);
+    } catch(e) {
+        console.log(e);
+        res.send(e);
+    }
 });
 
 app.listen(PORT, () => {

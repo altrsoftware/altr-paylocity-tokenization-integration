@@ -186,5 +186,98 @@ describe('TESTING mainAllEmployees(config)', () => {
             expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "fakeEmployeeData" }] }));
         });
     });
+    
+    describe('When mainAllEmployees(config) is able to fetch data, but tokenization fails', () => {
+        it('the keys intended to be tokenized return values "tokenization failed"', async () => {
+            config = {
+                "Function": "getEmployee",
+                "Tokenize": [
+                    "employeeData"
+                ],
+                "Parameters": {
+                    "employee": "all"
+                },
+                "Export": "false"
+            };
+            process.env = {
+                ...process.env,
+                "domain": "fakeDomain",
+                "clientId": "fakeClientId",
+                "clientSecret": "fakeClientSecret",
+                "mapiKey": "fakeKey",
+                "mapiSecret": "fakeSecret",
+                "s3Endpoint": "fakeS3Endpoint",
+                "s3Key": "fakeS3Key",
+            }
+            mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=1&pagenumber=0').reply(200, [ { employeeId: 1 } ], { "x-pcty-total-count": 1 });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees/1').reply(200, [{ "employeeData": "fakeEmployeeData" }]);
+            mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(404, {})
+            response = await mainAllEmployees(config);
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "tokenization failed" }] }));
+        });
+    });
 
+    describe('When mainAllEmployees(config) tokenization succeeds', () => {
+        it('should return properly tokenized values for all employees', async () => {
+            config = {
+                "Function": "getEmployee",
+                "Tokenize": [
+                    "employeeData"
+                ],
+                "Parameters": {
+                    "employee": "all"
+                },
+                "Export": "false"
+            };
+            process.env = {
+                ...process.env,
+                "domain": "fakeDomain",
+                "clientId": "fakeClientId",
+                "clientSecret": "fakeClientSecret",
+                "mapiKey": "fakeKey",
+                "mapiSecret": "fakeSecret",
+                "s3Endpoint": "fakeS3Endpoint",
+                "s3Key": "fakeS3Key",
+            }
+            mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=1&pagenumber=0').reply(200, [ { employeeId: 1 } ], { "x-pcty-total-count": 1 });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees/1').reply(200, [{ "employeeData": "fakeEmployeeData" }]);
+            mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(200, { data: { "1.0.employeeData": "token_fakeToken" } })
+            response = await mainAllEmployees(config);
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "token_fakeToken" }] }));
+        });
+    });
+
+    describe('When mainAllEmployees(config) tokenization succeeds and s3 export fails', () => {
+        it('should still return properly tokenized values for all employees', async () => {
+            config = {
+                "Function": "getEmployee",
+                "Tokenize": [
+                    "employeeData"
+                ],
+                "Parameters": {
+                    "employee": "all"
+                },
+                "Export": "true"
+            };
+            process.env = {
+                ...process.env,
+                "domain": "fakeDomain",
+                "clientId": "fakeClientId",
+                "clientSecret": "fakeClientSecret",
+                "mapiKey": "fakeKey",
+                "mapiSecret": "fakeSecret",
+                "s3Endpoint": "fakeS3Endpoint",
+                "s3Key": "fakeS3Key",
+            }
+            mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=1&pagenumber=0').reply(200, [ { employeeId: 1 } ], { "x-pcty-total-count": 1 });
+            mock.onGet('fakeDomain/api/v2/companies/undefined/employees/1').reply(200, [{ "employeeData": "fakeEmployeeData" }]);
+            mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(200, { data: { "1.0.employeeData": "token_fakeToken" } });
+            mock.onPost
+            response = await mainAllEmployees(config);
+            expect(JSON.stringify(response)).toStrictEqual(JSON.stringify({ "1": [{ "employeeData": "token_fakeToken" }] }));
+        });
+    });
 });

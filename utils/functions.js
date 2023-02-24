@@ -156,4 +156,4 @@ const getFunction = (config) => {
     return FUNCTIONS[_function](config.Parameters);
 };
 
-module.exports = getFunction;
+module.exports = { getFunction, FUNCTIONS };
