@@ -41,11 +41,6 @@ const main = async (config) => {
         data.push(res[item]);
     }
 
-    if(config.Export === "true") {
-        const exportSuccess = await s3Export({body: data, name: `${config.Function}-${new Date().toISOString()}.json`});
-        console.log(exportSuccess);
-    }
-
     return data;
 
 }
