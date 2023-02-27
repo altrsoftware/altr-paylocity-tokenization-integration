@@ -50,3 +50,8 @@ A configuration object must be sent to the Express server in the body of an HTTP
 - getAllLocalTaxes: [ 'employee' ]
 - getLocalTaxesByTaxCode: [ 'employee', 'taxCode' ]
 - getSensitiveData: [ 'employee' ]
+
+## Additional Resources
+https://docs.altr.com/
+https://www.youtube.com/channel/UCcqDY0wrRlQ8hQ_mjJNfkAA
+https://www.altr.com/resources
