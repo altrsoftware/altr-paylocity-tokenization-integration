@@ -147,7 +147,7 @@ FUNCTIONS.getSensitiveData.required = ["employee"];
  */
 const getFunction = (config) => {
     const _function = config?.Function;
-    if(!_function || !FUNCTIONS[_function]) throw (`${_function} is not a valid function name`);
+    if(!_function || !FUNCTIONS.hasOwnProperty(_function)) throw (`${_function} is not a valid function name`);
     const params = config?.Parameters;
     if(!params && FUNCTIONS[_function].required.length !== 0) throw (`Parameter(s) ${FUNCTIONS[_function].required} required`)
     for(param in FUNCTIONS[_function].required) {
