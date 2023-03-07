@@ -146,8 +146,8 @@ FUNCTIONS.getSensitiveData.required = ["employee"];
  * @returns {string} The URL path to be attached to the domain from env
  */
 const getFunction = (config) => {
-    const _function = config?.Function;
-    if(!_function || !FUNCTIONS.hasOwnProperty(_function)) throw (`Exception: ${_function} is not a valid function name`);
+    if(!config?.Function || !FUNCTIONS.hasOwnProperty(config?.Function)) throw (`Exception: ${config?.Function} is not a valid function name`);
+    const _function = config.Function;
     const params = config?.Parameters;
     if(!params && FUNCTIONS[_function].required.length !== 0) throw (`Exception: Parameter(s) ${FUNCTIONS[_function].required} required`)
     for(param in FUNCTIONS[_function].required) {
