@@ -18,23 +18,9 @@ const main = async (config) => {
 
     let _function = getFunction(config);
 
-    let res = (await sendGetRequest(auth, _function)).data;
+    let data = (await sendGetRequest(auth, _function)).data;
     
-    const data = Array.isArray(res) ? [] : {};
-    for(let item in res) {
-        for(let tokenizeIndex in config.Tokenize) {
-            const toTokenize = config.Tokenize[tokenizeIndex];
-            if(!(res[item].hasOwnProperty(toTokenize) || res.hasOwnProperty(toTokenize))) continue;
-            try {
-                if(res[item].hasOwnProperty(toTokenize)) res[item][toTokenize] = (await tokenize({[toTokenize]: res[item][toTokenize]}))[toTokenize];
-                else res[toTokenize] = (await tokenize({[toTokenize]: res[toTokenize]}))[toTokenize];
-            } catch(e) {
-                res[item][toTokenize] = "tokenization failed";
-                console.error('failed to tokenize ' + toTokenize);
-            }
-        }
-        data[item] = res[item];
-    }
+    if(Array.isArray(config?.Tokenize) && config.Tokenize.length > 0) data = await tokenize(data, config.Tokenize);
 
     if(config.Export === "true") {
         await s3Export({body: data, name: `${config.Function}-${new Date().toISOString()}.json`});
