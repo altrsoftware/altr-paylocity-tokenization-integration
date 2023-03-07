@@ -12,7 +12,7 @@ const getAuth = async () => {
     if(!domain) missingParams.push('domain')
     if(!clientId) missingParams.push('clientId')
     if(!clientSecret) missingParams.push('clientSecret')
-    if(missingParams.length != 0) throw `${missingParams} is undefined`;
+    if(missingParams.length != 0) throw `Exception: ${missingParams} is undefined`;
 
     const config = {
         method: 'POST',
@@ -31,7 +31,7 @@ const getAuth = async () => {
         .then((response) => {
             return response.data.access_token
         }).catch((e) => {
-            throw 'Can not authenticate';
+            throw 'Exception: Can not authenticate';
         })
 }
 

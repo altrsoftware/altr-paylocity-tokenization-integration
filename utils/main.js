@@ -10,9 +10,9 @@ const sendGetRequest = require('./sendGetRequest');
  */
 const main = async (config) => {
 
-    if(config === undefined) throw "config is undefined";
-    if(typeof config !== 'object') throw "config must be type object";
-    if(Object.keys(config).length === 0) throw "config must not be empty";
+    if(config === undefined) throw "Exception: config is undefined";
+    if(typeof config !== 'object') throw "Exception: config must be type object";
+    if(Object.keys(config).length === 0) throw "Exception: config must not be empty";
 
     const auth = 'Bearer ' + await require('./getAuth')();
 
