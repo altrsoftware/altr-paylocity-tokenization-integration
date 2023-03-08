@@ -20,27 +20,27 @@ let response;
 describe('TESTING sendGetRequest(auth, url)', () => {
     
     describe('When auth is undefined', () => {
-        it('should throw "Auth is not defined"', async () => {
+        it('should throw "Exception: Auth is not defined"', async () => {
             url = '/fakeURL';
             auth = undefined;
             try {
                 await sendGetRequest(auth, url);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("Auth is not defined");
+                expect(e).toStrictEqual("Exception: Auth is not defined");
             }
         });
     });
     
     describe('When auth is defined and url is undefined', () => {
-        it('should throw "URL is not defined"', async () => {
+        it('should throw "Exception: URL is not defined"', async () => {
             url = undefined;
             auth = 'fakeAuth';
             try {
                 await sendGetRequest(auth, url);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("URL is not defined");
+                expect(e).toStrictEqual("Exception: URL is not defined");
             }
         });
     });
@@ -48,7 +48,7 @@ describe('TESTING sendGetRequest(auth, url)', () => {
     describe('When auth and url are defined', () => {
 
         describe('When auth and/or url are invalid', () => {
-            it('should throw "Can not fetch paylocity data"', async () => {
+            it('should throw "Exception: Can not fetch paylocity data"', async () => {
                 url = '/invalidURL';
                 auth = 'invalidAuth';
                 mock.onGet('https://api.paylocity.com/invalidURL').reply(401, { error: "invalid request" })
@@ -56,7 +56,7 @@ describe('TESTING sendGetRequest(auth, url)', () => {
                     await sendGetRequest(auth, url);
                     expect(true).toStrictEqual(false);
                 } catch(e) {
-                    expect(e).toStrictEqual("Can not fetch paylocity data");
+                    expect(e).toStrictEqual("Exception: Can not fetch paylocity data");
                 }
             });
         });

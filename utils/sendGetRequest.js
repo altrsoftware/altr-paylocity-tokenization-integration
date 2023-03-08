@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 const sendGetRequest = async (auth, url) => {
-    if(auth == undefined) throw 'Auth is not defined';
-    if(url == undefined) throw 'URL is not defined';
+    if(auth == undefined) throw 'Exception: Auth is not defined';
+    if(url == undefined) throw 'Exception: URL is not defined';
 
     const domain = process.env.domain ?? 'https://api.paylocity.com';
 
@@ -17,7 +17,7 @@ const sendGetRequest = async (auth, url) => {
     return await axios(config)
         .then(response => response)
         .catch(() => {
-            throw 'Can not fetch paylocity data';
+            throw 'Exception: Can not fetch paylocity data';
         });
 }
 
