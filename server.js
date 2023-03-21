@@ -10,7 +10,8 @@ app.use(express.json());
 
 const PORT = parseInt(process.env.PORT) || 3000;
 
-app.post('/*', async ({ body }, res) => {
+app.post('/*', async (req, res) => {
+    const body = JSON.parse(decodeURIComponent(encodeURI(JSON.stringify(req.body))));
     try {
         if(!functions.hasOwnProperty(body?.Function)) throw (`Exception: ${body?.Function} is not a valid function name`);
         const hasEmployeeParam = functions?.[body?.Function].required.includes('employee');
