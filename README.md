@@ -1,6 +1,22 @@
 # Tokenize Paylocity Data
 
+ALTR's Open Source integraton with Paylocity allows customers to leverage [ALTR's Vaulted Tokenization](https://docs.altr.com/explore-altr-features/vault-tokenization) to protect sensitive data from [Paylocity's Web Services API](https://prod.cdn.paylocity.com/developer/index.html#t=Topics%2FOverview.htm), while in transit.
+
+Why tokenize data in transit?
+
+- Raw sensitive data will never exist in the data's destination
+- Tokenization is more secure than encryption, because a token represents a value without being a function of or derivive of that value
+- ALTR can apply role based policy to the tokenized data, to decide who gets to see it and how much they get to see
+- Tokenized data retains referential integrity and can still be used for SQL operations like join and group
+
+## Architecture
+<hr>
+
+![Integration Architecture Diagram](./arch_diagram.png)
+
 ## Necessary Environment Variables:
+<hr>
+
 - **domain** - The domain of the Paylocity API (most likely https://api.paylocity.com)
 - **company** - Your company's unique ID
 - **clientId** - Your Paylocity API key
@@ -52,6 +68,7 @@ A configuration object must be sent to the Express server in the body of an HTTP
 - getSensitiveData: [ 'employee' ]
 
 ## Additional Resources
+<hr>
 https://docs.altr.com/
 
 https://www.youtube.com/channel/UCcqDY0wrRlQ8hQ_mjJNfkAA
