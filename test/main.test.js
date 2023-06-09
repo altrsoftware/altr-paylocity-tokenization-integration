@@ -19,43 +19,43 @@ let response;
 describe("TESTING main(config)", () => {
 
     describe('When config is undefined', () => {
-        it('should throw "config is undefined"', async () => {
+        it('should throw "Exception: config is undefined"', async () => {
             config = undefined;
             try {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("config is undefined");
+                expect(e).toStrictEqual("Exception: config is undefined");
             }
         });
     });
 
     describe('When config is not type object', () => {
-        it('should throw "config must be type object"', async () => {
+        it('should throw "Exception: config must be type object"', async () => {
             config = "fakeConfig";
             try {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("config must be type object");
+                expect(e).toStrictEqual("Exception: config must be type object");
             }
         });
     });
 
     describe('When config is an empty object', () => {
-        it('should throw "config must not be empty"', async () => {
+        it('should throw "Exception: config must not be empty"', async () => {
             config = {};
             try {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("config must not be empty");
+                expect(e).toStrictEqual("Exception: config must not be empty");
             }
         });
     });
 
     describe('When config is a non-empty object and getAuth() fails', () => {
-        it('should throw "domain,clientId,clientSecret is undefined"', async () => {
+        it('should throw "Exception: domain,clientId,clientSecret is undefined"', async () => {
             config = {
                 "fakeKey": "fakeValue"
             };
@@ -63,13 +63,13 @@ describe("TESTING main(config)", () => {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("domain,clientId,clientSecret is undefined");
+                expect(e).toStrictEqual("Exception: domain,clientId,clientSecret is undefined");
             }
         });
     });
 
     describe('When getAuth() succeeds and getFunction(config) fails', () => {
-        it('should throw "undefined is not a valid function name"', async () => {
+        it('should throw "Exception: undefined is not a valid function name"', async () => {
             config = {
                 "fakeKey": "fakeValue"
             };
@@ -84,13 +84,13 @@ describe("TESTING main(config)", () => {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("undefined is not a valid function name");
+                expect(e).toStrictEqual("Exception: undefined is not a valid function name");
             }
         });
     });
 
     describe('When getFunction(config) succeeds and fetching paylocity data fails', () => {
-        it('should throw "Can not fetch paylocity data"', async () => {
+        it('should throw "Exception: Can not fetch paylocity data"', async () => {
             config = {
                 "Function": "getEmployeeIds",
                 "Parameters": {
@@ -110,7 +110,7 @@ describe("TESTING main(config)", () => {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual('Can not fetch paylocity data');
+                expect(e).toStrictEqual('Exception: Can not fetch paylocity data');
             }
         });
     });
@@ -129,7 +129,9 @@ describe("TESTING main(config)", () => {
                 ...process.env,
                 "domain": "fakeDomain",
                 "clientId": "fakeClientId",
-                "clientSecret": "fakeClientSecret"
+                "clientSecret": "fakeClientSecret",
+                "mapiKey": "fakeMapiKey",
+                "mapiSecret": "fakeMapiSecret"
             }
             mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
             mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
@@ -152,7 +154,9 @@ describe("TESTING main(config)", () => {
                 ...process.env,
                 "domain": "fakeDomain",
                 "clientId": "fakeClientId",
-                "clientSecret": "fakeClientSecret"
+                "clientSecret": "fakeClientSecret",
+                "mapiKey": "fakeMapiKey",
+                "mapiSecret": "fakeMapiSecret"
             }
             mock.onPost('fakeDomain/IdentityServer/connect/token').reply(200, { access_token: "fakeAccessToken" });
             mock.onGet('fakeDomain/api/v2/companies/undefined/employees?pagesize=10&pagenumber=0').reply(200, [{ "fakeKey": "fakeValueToTokenize" }]);
@@ -162,7 +166,7 @@ describe("TESTING main(config)", () => {
     });
     
     describe('When Tokenization succeeds and S3 Export fails', () => {
-        it('should throw "s3Key is undefined"', async () => {
+        it('should throw "Exception: s3Key is undefined"', async () => {
             config = {
                 "Function": "getEmployeeIds",
                 "Parameters": {
@@ -189,7 +193,7 @@ describe("TESTING main(config)", () => {
                 await main(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("s3Key is undefined");
+                expect(e).toStrictEqual("Exception: s3Key is undefined");
             }
         });
     });

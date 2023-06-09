@@ -17,41 +17,41 @@ let props;
 describe('TESTING s3Export(props)', () => {
 
     describe('When argument props is undefined', () => {
-        it('should throw "argument props is undefined"', async () => {
+        it('should throw "Exception: argument props is undefined"', async () => {
             try {
                 await s3Export(undefined);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("argument props is undefined");
+                expect(e).toStrictEqual("Exception: argument props is undefined");
             }
         });
     });
 
     describe('When argument props is type "string"', () => {
-        it('should throw "argument props must be type object"', async () => {
+        it('should throw "Exception: argument props must be type object"', async () => {
             try {
                 await s3Export("fakeProps");
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("argument props must be type object");
+                expect(e).toStrictEqual("Exception: argument props must be type object");
             }
         });
     });
 
     describe('When argument props is an empty object', () => {
-        it('should throw "argument props must not be empty"', async () => {
+        it('should throw "Exception: argument props must not be empty"', async () => {
             props = {};
             try {
                 await s3Export(props);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("argument props must not be empty");
+                expect(e).toStrictEqual("Exception: argument props must not be empty");
             }
         });
     });
 
     describe('When argument props is missing name and body', () => {
-        it('should throw "props name,body is undefined"', async () => {
+        it('should throw "Exception: props name,body is undefined"', async () => {
             props = {
                 "value": "fakeValue"
             }
@@ -59,13 +59,13 @@ describe('TESTING s3Export(props)', () => {
                 await s3Export(props);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("props name,body is undefined");
+                expect(e).toStrictEqual("Exception: props name,body is undefined");
             }
         });
     });
 
     describe('When argument props is missing name', () => {
-        it('should throw "props name is undefined"', async () => {
+        it('should throw "Exception: props name is undefined"', async () => {
             props = {
                 "body": "fakeBody",
             }
@@ -73,13 +73,13 @@ describe('TESTING s3Export(props)', () => {
                 await s3Export(props);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("props name is undefined");
+                expect(e).toStrictEqual("Exception: props name is undefined");
             }
         });
     });
 
     describe('When props contains necessary values and s3Endpoint and s3Key is undefined', () => {
-        it('should throw "s3Endpoint,s3Key is undefined"', async () => {
+        it('should throw "Exception: s3Endpoint,s3Key is undefined"', async () => {
             props = {
                 "body": "fakeBody",
                 "name": "fakeName"
@@ -88,13 +88,13 @@ describe('TESTING s3Export(props)', () => {
                 await s3Export(props);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("s3Endpoint,s3Key is undefined");
+                expect(e).toStrictEqual("Exception: s3Endpoint,s3Key is undefined");
             }
         });
     });
 
     describe('When props contains necessary values and s3Endpoint is undefined', () => {
-        it('should throw "s3Endpoint,s3Key is undefined"', async () => {
+        it('should throw "Exception: s3Endpoint,s3Key is undefined"', async () => {
             props = {
                 "body": "fakeBody",
                 "name": "fakeName"
@@ -107,7 +107,7 @@ describe('TESTING s3Export(props)', () => {
                 await s3Export(props);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("s3Endpoint is undefined");
+                expect(e).toStrictEqual("Exception: s3Endpoint is undefined");
             }
         });
     });
@@ -115,7 +115,7 @@ describe('TESTING s3Export(props)', () => {
     describe('When props contains necessary values and s3Endpoint and s3Key are defined', () => {
 
         describe('When s3Export fails', () => {
-            it('should throw "Can not export to s3"', async () => {
+            it('should throw "Exception: Can not export to s3"', async () => {
                 props = {
                     "body": "fakeBody",
                     "name": "fakeName"
@@ -130,7 +130,7 @@ describe('TESTING s3Export(props)', () => {
                     await s3Export(props);
                     expect(true).toStrictEqual(false);
                 } catch(e) {
-                    expect(e).toStrictEqual("Can not export to s3");
+                    expect(e).toStrictEqual("Exception: Can not export to s3");
                 }
             });
         });

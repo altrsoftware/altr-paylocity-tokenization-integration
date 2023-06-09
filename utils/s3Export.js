@@ -7,21 +7,21 @@ const axios = require('axios');
  */
 const s3Export = async (props) => {
 
-    if(props === undefined) throw 'argument props is undefined';
-    if(typeof props !== 'object') throw 'argument props must be type object';
-    if(Object.keys(props).length === 0) throw 'argument props must not be empty';
+    if(props === undefined) throw 'Exception: argument props is undefined';
+    if(typeof props !== 'object') throw 'Exception: argument props must be type object';
+    if(Object.keys(props).length === 0) throw 'Exception: argument props must not be empty';
     
     const missingProps = [];
     if(!props.name) missingProps.push('name');
     if(!props.body) missingProps.push('body');
-    if(missingProps.length != 0) throw `props ${missingProps} is undefined`;
+    if(missingProps.length != 0) throw `Exception: props ${missingProps} is undefined`;
 
     const { s3Endpoint, s3Key } = process.env;
 
     const missingParams = [];
     if(!s3Endpoint) missingParams.push('s3Endpoint');
     if(!s3Key) missingParams.push('s3Key');
-    if(missingParams.length !== 0) throw `${missingParams} is undefined`;
+    if(missingParams.length !== 0) throw `Exception: ${missingParams} is undefined`;
 
     const config = {
         method: 'Post',
@@ -37,7 +37,7 @@ const s3Export = async (props) => {
     return await axios(config)
         .then(res => 's3 export success')
         .catch(err => {
-            throw 'Can not export to s3';
+            throw 'Exception: Can not export to s3';
         })
 
 }

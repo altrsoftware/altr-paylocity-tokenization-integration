@@ -6,37 +6,37 @@ let functionCall;
 describe("TESTING getFunction(config)", () => {
 
     describe('When config.Function is undefined', () => {
-        it('should throw "undefined is not a valid function name"', () => {
+        it('should throw "Exception: undefined is not a valid function name"', () => {
             config = {};
             functionCall = () => { getFunction(config) };
-            expect(functionCall).toThrow("undefined is not a valid function name");
+            expect(functionCall).toThrow("Exception: undefined is not a valid function name");
         });
     });
 
     describe('When config.Function is "invalidFunction", which is not a valid function name', () => {
-        it('should throw "invalidFunction is not a valid function name"', () => {
+        it('should throw "Exception: invalidFunction is not a valid function name"', () => {
             config = {
                 "Function": "invalidFunction"
             };
             functionCall = () => { getFunction(config) };
-            expect(functionCall).toThrow("invalidFunction is not a valid function name");
+            expect(functionCall).toThrow("Exception: invalidFunction is not a valid function name");
         });
     });
 
     describe('When config.Function is "getPayStatementSummaryByYear"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year required"', () => {
                 config = {
                     "Function": "getPayStatementSummaryByYear"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,year required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,year required");
             });
         });
 
         describe("When Parameter employee is missing", () => {
-            it('should throw "Parameters must include employee"', () => {
+            it('should throw "Exception: Parameters must include employee"', () => {
                 config = {
                     "Function": "getPayStatementSummaryByYear",
                     "Parameters": {
@@ -44,7 +44,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include employee");
+                expect(functionCall).toThrow("Exception: Parameters must include employee");
             });
         });
 
@@ -67,17 +67,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getPayStatementSummaryByYearAndDate"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year,date required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year,date required"', () => {
                 config = {
                     "Function": "getPayStatementSummaryByYearAndDate"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,year,date required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,year,date required");
             });
         });
 
         describe("When Parameter date is missing", () => {
-            it('should throw "Parameters must include date"', () => {
+            it('should throw "Exception: Parameters must include date"', () => {
                 config = {
                     "Function": "getPayStatementSummaryByYearAndDate",
                     "Parameters": {
@@ -86,7 +86,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include date");
+                expect(functionCall).toThrow("Exception: Parameters must include date");
             });
         });
 
@@ -110,17 +110,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getPayStatementDetailsByYear"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year required"', () => {
                 config = {
                     "Function": "getPayStatementDetailsByYear"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,year required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,year required");
             });
         });
 
         describe("When Parameter employee is missing", () => {
-            it('should throw "Parameters must include employee"', () => {
+            it('should throw "Exception: Parameters must include employee"', () => {
                 config = {
                     "Function": "getPayStatementDetailsByYear",
                     "Parameters": {
@@ -128,7 +128,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include employee");
+                expect(functionCall).toThrow("Exception: Parameters must include employee");
             });
         });
 
@@ -151,17 +151,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getPayStatementDetailsByYearAndDate"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year,date required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year,date required"', () => {
                 config = {
                     "Function": "getPayStatementDetailsByYearAndDate"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,year,date required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,year,date required");
             });
         });
 
         describe("When Parameter date is missing", () => {
-            it('should throw "Parameters must include date"', () => {
+            it('should throw "Exception: Parameters must include date"', () => {
                 config = {
                     "Function": "getPayStatementDetailsByYearAndDate",
                     "Parameters": {
@@ -170,7 +170,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include date");
+                expect(functionCall).toThrow("Exception: Parameters must include date");
             });
         });
 
@@ -194,12 +194,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getEmployee"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee required"', () => {
+            it('should throw "Exception: Parameter(s) employee required"', () => {
                 config = {
                     "Function": "getEmployee"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee required");
             });
         });
 
@@ -221,17 +221,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getEmployeeIds"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year required"', () => {
                 config = {
                     "Function": "getEmployeeIds"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) pageSize,pageNumber required");
+                expect(functionCall).toThrow("Exception: Parameter(s) pageSize,pageNumber required");
             });
         });
 
         describe("When Parameter pageSize is missing", () => {
-            it('should throw "Parameters must include employee"', () => {
+            it('should throw "Exception: Parameters must include employee"', () => {
                 config = {
                     "Function": "getEmployeeIds",
                     "Parameters": {
@@ -239,7 +239,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include pageSize");
+                expect(functionCall).toThrow("Exception: Parameters must include pageSize");
             });
         });
 
@@ -262,12 +262,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getCompanyCodes"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) codeResource required"', () => {
+            it('should throw "Exception: Parameter(s) codeResource required"', () => {
                 config = {
                     "Function": "getCompanyCodes"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) codeResource required");
+                expect(functionCall).toThrow("Exception: Parameter(s) codeResource required");
             });
         });
 
@@ -299,12 +299,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getCustomFields"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) category required"', () => {
+            it('should throw "Exception: Parameter(s) category required"', () => {
                 config = {
                     "Function": "getCustomFields"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) category required");
+                expect(functionCall).toThrow("Exception: Parameter(s) category required");
             });
         });
 
@@ -326,12 +326,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getDirectDeposit"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee required"', () => {
+            it('should throw "Exception: Parameter(s) employee required"', () => {
                 config = {
                     "Function": "getDirectDeposit"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee required");
             });
         });
 
@@ -353,12 +353,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getEarnings"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee required"', () => {
+            it('should throw "Exception: Parameter(s) employee required"', () => {
                 config = {
                     "Function": "getEarnings"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee required");
             });
         });
 
@@ -380,17 +380,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getEarningsByEarningCode"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year required"', () => {
                 config = {
                     "Function": "getEarningsByEarningCode"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,earningCode required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,earningCode required");
             });
         });
 
         describe("When Parameter employee is missing", () => {
-            it('should throw "Parameters must include employee"', () => {
+            it('should throw "Exception: Parameters must include employee"', () => {
                 config = {
                     "Function": "getEarningsByEarningCode",
                     "Parameters": {
@@ -398,7 +398,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include employee");
+                expect(functionCall).toThrow("Exception: Parameters must include employee");
             });
         });
 
@@ -421,17 +421,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getEarningsByEarningCodeAndStartDate"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,year,startDate required"', () => {
+            it('should throw "Exception: Parameter(s) employee,year,startDate required"', () => {
                 config = {
                     "Function": "getEarningsByEarningCodeAndStartDate"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,earningCode,startDate required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,earningCode,startDate required");
             });
         });
 
         describe("When Parameter startDate is missing", () => {
-            it('should throw "Parameters must include startDate"', () => {
+            it('should throw "Exception: Parameters must include startDate"', () => {
                 config = {
                     "Function": "getEarningsByEarningCodeAndStartDate",
                     "Parameters": {
@@ -440,7 +440,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include startDate");
+                expect(functionCall).toThrow("Exception: Parameters must include startDate");
             });
         });
 
@@ -464,12 +464,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getAllLocalTaxes"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee required"', () => {
+            it('should throw "Exception: Parameter(s) employee required"', () => {
                 config = {
                     "Function": "getAllLocalTaxes"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee required");
             });
         });
 
@@ -491,17 +491,17 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getLocalTaxesByTaxCode"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee,taxCode required"', () => {
+            it('should throw "Exception: Parameter(s) employee,taxCode required"', () => {
                 config = {
                     "Function": "getLocalTaxesByTaxCode"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee,taxCode required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee,taxCode required");
             });
         });
 
         describe("When Parameter employee is missing", () => {
-            it('should throw "Parameters must include employee"', () => {
+            it('should throw "Exception: Parameters must include employee"', () => {
                 config = {
                     "Function": "getLocalTaxesByTaxCode",
                     "Parameters": {
@@ -509,7 +509,7 @@ describe("TESTING getFunction(config)", () => {
                     }
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameters must include employee");
+                expect(functionCall).toThrow("Exception: Parameters must include employee");
             });
         });
 
@@ -532,12 +532,12 @@ describe("TESTING getFunction(config)", () => {
     describe('When config.Function is "getSensitiveData"', () => {
 
         describe("When all required Parameters are missing", () => {
-            it('should throw "Parameter(s) employee required"', () => {
+            it('should throw "Exception: Parameter(s) employee required"', () => {
                 config = {
                     "Function": "getSensitiveData"
                 }
                 functionCall = () => { getFunction(config) };
-                expect(functionCall).toThrow("Parameter(s) employee required");
+                expect(functionCall).toThrow("Exception: Parameter(s) employee required");
             });
         });
 

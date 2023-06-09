@@ -15,7 +15,7 @@
     "url": "git@gitlab.ch5.altr.com:application-engineering/tokenize-paylocity-data.git"
   },
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage --silent"
+    "test": "jest --verbose --coverage --silent"
   },
   "author": "",
   "license": "ISC"

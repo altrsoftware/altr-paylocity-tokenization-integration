@@ -18,43 +18,43 @@ let config;
 describe('TESTING mainAllEmployees(config)', () => {
 
     describe('When config is undefined', () => {
-        it('Should throw "config is undefined"', async () => {
+        it('Should throw "Exception: config is undefined"', async () => {
             config = undefined;
             try {
                 await mainAllEmployees(config);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("config is undefined");
+                expect(e).toStrictEqual("Exception: config is undefined");
             }
         });
     });
 
     describe('When config is not an object', () => {
-        it('Should throw "config must be type object"', async () => {
+        it('Should throw "Exception: config must be type object"', async () => {
             config = "invalid config";
             try {
                 await mainAllEmployees(config);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("config must be type object");
+                expect(e).toStrictEqual("Exception: config must be type object");
             }
         });
     });
 
     describe('When config is an empty object', () => {
-        it('Should throw "config must not be empty"', async () => {
+        it('Should throw "Exception: config must not be empty"', async () => {
             config = {};
             try {
                 await mainAllEmployees(config);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("config must not be empty");
+                expect(e).toStrictEqual("Exception: config must not be empty");
             }
         });
     });
 
     describe('When config is a non-empty object and getAuth() fails', () => {
-        it('should throw "domain,clientId,clientSecret is undefined"', async () => {
+        it('should throw "Exception: domain,clientId,clientSecret is undefined"', async () => {
             config = {
                 "fakeKey": "fakeValue"
             };
@@ -62,13 +62,13 @@ describe('TESTING mainAllEmployees(config)', () => {
                 await mainAllEmployees(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("domain,clientId,clientSecret is undefined");
+                expect(e).toStrictEqual("Exception: domain,clientId,clientSecret is undefined");
             }
         });
     });
 
     describe('When getAuth() succeeds but sendGetRequest fails', () => {
-        it('should throw "domain,clientId,clientSecret is undefined"', async () => {
+        it('should throw "Exception: domain,clientId,clientSecret is undefined"', async () => {
             process.env = {
                 ...process.env,
                 "domain": "fakeDomain",
@@ -81,13 +81,13 @@ describe('TESTING mainAllEmployees(config)', () => {
                 await mainAllEmployees(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("Can not fetch paylocity data");
+                expect(e).toStrictEqual("Exception: Can not fetch paylocity data");
             }
         });
     });
 
     describe('When sendGetRequest succeeds but is missing total employee count', () => {
-        it('should throw "Total employee count missing from paylocity data"', async () => {
+        it('should throw "Exception: Total employee count missing from paylocity data"', async () => {
             process.env = {
                 ...process.env,
                 "domain": "fakeDomain",
@@ -100,13 +100,13 @@ describe('TESTING mainAllEmployees(config)', () => {
                 await mainAllEmployees(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("Total employee count missing from paylocity data");
+                expect(e).toStrictEqual("Exception: Total employee count missing from paylocity data");
             }
         });
     });
 
     describe('When sendGetRequest contains the total employee count and but main fails', () => {
-        it('should throw "Can not fetch paylocity data"', async () => {
+        it('should throw "Exception: Can not fetch paylocity data"', async () => {
             config = {
                 "Function": "getEmployee",
                 "Tokenize": [],
@@ -127,13 +127,13 @@ describe('TESTING mainAllEmployees(config)', () => {
                 await mainAllEmployees(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("Can not fetch paylocity data");
+                expect(e).toStrictEqual("Exception: Can not fetch paylocity data");
             }
         });
     });
 
     describe('When sendGetRequest contains the total employee count and but main fails', () => {
-        it('should throw "Can not fetch paylocity data"', async () => {
+        it('should throw "Exception: Can not fetch paylocity data"', async () => {
             config = {
                 "Function": "getEmployee",
                 "Tokenize": [],
@@ -154,7 +154,7 @@ describe('TESTING mainAllEmployees(config)', () => {
                 await mainAllEmployees(config);
                 expect(false).toStrictEqual(true);
             } catch(e) {
-                expect(e).toStrictEqual("Can not fetch paylocity data");
+                expect(e).toStrictEqual("Exception: Can not fetch paylocity data");
             }
         });
     });

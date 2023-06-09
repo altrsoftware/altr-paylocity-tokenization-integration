@@ -14,92 +14,117 @@ afterEach(() => {
 
 describe('TESTING tokenize(payload)', () => {
 
-    describe('When payload, mapiKey, mapiSecret is undefined', () => {
-        it('should throw "payload must have type object"', async () => {
+    describe('When data, tokenizeKeys, mapiKey, mapiSecret is undefined', () => {
+        it('should throw "Exception: data must have type object"', async () => {
             try {
-                await tokenize(undefined);
+                await tokenize(undefined, undefined);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("payload must have type object");
+                expect(e).toStrictEqual("Exception: data must have type object");
             }
         });
     });
 
-    describe('When mapiKey, mapiSecret is undefined and payload is an empty object', () => {
-        it('should throw "object payload must not be empty"', async () => {
+    describe('When tokenizeKeys, mapiKey, mapiSecret is undefined and payload is an empty object', () => {
+        it('should throw "Exception: object data must not be empty"', async () => {
             try {
-                await tokenize({});
+                await tokenize({}, undefined);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("object payload must not be empty");
+                expect(e).toStrictEqual("Exception: object data must not be empty");
             }
         });
     });
 
-    describe('When mapiKey, mapiSecret is undefined and payload is a non-empty object', () => {
-        it('should throw "mapiKey,mapiSecret is undefined"', async () => {
+    describe('When tokenizeKeys exists and is not an Array, mapiKey and mapiSecret are undefined and payload is a non-empty object', () => {
+        it('should throw "Exception: Tokenize must have type Array"', async () => {
             try {
                 const payload = { fakeKey: "fakeValue" };
-                await tokenize(payload);
+                await tokenize(payload, {});
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("mapiKey,mapiSecret is undefined");
+                expect(e).toStrictEqual("Exception: Tokenize must have type Array");
             }
         });
     });
 
-    describe('When mapiKey is undefined, mapiSecret is defined, and payload is a non-empty object', () => {
-        it('should throw "mapiKey is undefined"', async () => {
+    describe('When mapiKey and mapiSecret are undefined, and tokenizeKeys does not exist', () => {
+        it('should throw "Exception: mapiKey,mapiSecret is undefined"', async () => {
             process.env = {
                 ...process.env,
-                mapiSecret: "fakeMapiSecret"
             }
             const payload = { fakeKey: "fakeValue" };
             try {
-                await tokenize(payload);
+                await tokenize(payload, undefined);
                 expect(true).toStrictEqual(false);
             } catch(e) {
-                expect(e).toStrictEqual("mapiKey is undefined");
+                expect(e).toStrictEqual("Exception: mapiKey,mapiSecret is undefined");
             }
         });
     });
 
-    describe('When mapiKey, mapiSecret is defined, and payload is a non-empty object', () => {
+    describe('When mapiKey is defined, mapiSecret is undefined, and tokenizeKeys is an Array', () => {
+        it('should return "Exception: mapiSecret is undefined"', async () => {
+            process.env = {
+                ...process.env,
+                mapiKey: "fakeMapiKey",
+            }
+            const payload = { fakeKey: "fakeValue" };
+            try {
+                await tokenize(payload, []);
+                expect(true).toStrictEqual(false);
+            } catch(e) {
+                expect(e).toStrictEqual("Exception: mapiSecret is undefined");
+            }
+        });
+    });
 
-        describe('When the mapiKey and mapiSecret are invalid', () => {
-            it('should return "Can not tokenize"', async () => {
-                mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(401, { data: {} });
+    describe('When mapiKey, mapiSecret are defined, and tokenizeKeys is an Array containing a field to tokenize, but the tokenization request failed authentication', () => {
+        it('should return failed tokenized values as "tokenization failed"', async () => {
+            mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(401, { data: {} });
+            process.env = {
+                ...process.env,
+                mapiKey: "fakeMapiKey",
+                mapiSecret: "fakeMapiSecret"
+            }
+            const payload = { fakeKey: "fakeValue" };
+            const data = await tokenize(payload, ["fakeKey"]);
+            expect(JSON.stringify(data)).toStrictEqual(JSON.stringify({ fakeKey: "tokenization failed" }));
+        });
+    });
+
+    describe('When mapiKey, mapiSecret are defined, tokenizeKeys is an Array containing a field to tokenize, and data is successfully tokenized', () => {
+        describe('When data contains no nested objects', () => {
+            it('should return correctly tokenized values', async () => {
+                mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(200, { data: { "fakeKey": "fakeToken" } });
                 process.env = {
                     ...process.env,
                     mapiKey: "fakeMapiKey",
                     mapiSecret: "fakeMapiSecret"
                 }
                 const payload = { fakeKey: "fakeValue" };
-                try {
-                    await tokenize(payload);
-                } catch(e) {
-                    expect(e).toStrictEqual("Can not tokenize");
-                }
+                const data = await tokenize(payload, ["fakeKey"]);
+                expect(JSON.stringify(data)).toStrictEqual(JSON.stringify({ fakeKey: "fakeToken" }));
             });
         });
 
-        describe('When the mapiKey and mapiSecret are valid', () => {
-            it('should return an object containing tokens', async () => {
-                mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(200, { data: { "1": "token_fakeToken" } });
+        describe('When data does contain nested objects', () => {
+            it('should return correctly tokenized values', async () => {
+                mock.onPost('https://vault.live.altr.com/api/v1/batch').reply(200, { data: { "fakeKey": "fakeToken", "fakeObject.fakeKey": "fakeToken2" } });
                 process.env = {
                     ...process.env,
                     mapiKey: "fakeMapiKey",
                     mapiSecret: "fakeMapiSecret"
                 }
-                const payload = { fakeKey: "fakeValue" };
-                const tokens = await tokenize(payload);
-                expect(JSON.stringify(tokens)).toStrictEqual(JSON.stringify({ "1": "token_fakeToken" }));
+                const payload = { fakeKey: "fakeValue", fakeObject: { fakeKey: "fakeValue2" } };
+                const data = await tokenize(payload, ["fakeKey"]);
+                expect(JSON.stringify(data)).toStrictEqual(JSON.stringify({ fakeKey: "fakeToken", fakeObject: { fakeKey: "fakeToken2" } }));
             });
         });
-
-        describe('When the mapiKey and mapiSecret are valid and the dev environment variable is "true"', () => {
-            it('should return an object containing tokens', async () => {
-                mock.onPost('https://vault.preview.altr.com/api/v1/batch').reply(200, { data: { "1": "token_fakeToken" } });
+        
+        describe('When dev is true', () => {
+            it('should use altr preview to return correctly tokenized values', async () => {
+                mock.onPost('https://vault.preview.altr.com/api/v1/batch').reply(200, { data: { "fakeKey": "fakeToken" } });
                 process.env = {
                     ...process.env,
                     mapiKey: "fakeMapiKey",
@@ -107,11 +132,10 @@ describe('TESTING tokenize(payload)', () => {
                     dev: "true"
                 }
                 const payload = { fakeKey: "fakeValue" };
-                const tokens = await tokenize(payload);
-                expect(JSON.stringify(tokens)).toStrictEqual(JSON.stringify({ "1": "token_fakeToken" }));
+                const data = await tokenize(payload, ["fakeKey"]);
+                expect(JSON.stringify(data)).toStrictEqual(JSON.stringify({ fakeKey: "fakeToken" }));
             });
         });
-
     });
 
 });
